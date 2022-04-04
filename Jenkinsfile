@@ -21,7 +21,7 @@ pipeline {
 //         }
         stage('Start tests') {
             steps {
-			     bat '''.\\\\gradlew clean test -Dtags="suite:sanity" -DHUB_HOST=hub -Dbrowser=chrome -Denvironment=staging'''
+			     bat '''.\\\\gradlew clean test -Dtags="suite:sanity" -Dbrowser="chrome" -Denvironment="staging"'''
             }
         }
     }
