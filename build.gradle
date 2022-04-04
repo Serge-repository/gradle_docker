@@ -1,0 +1,59 @@
+plugins {
+    id "net.serenity-bdd.serenity-gradle-plugin" version "2.6.0"
+    id 'java'
+    id 'idea'
+}
+
+ext {
+    serenityVersion = '2.6.0'
+}
+
+group 'com.gradle_docker.qa'
+version '1.0-SNAPSHOT'
+
+sourceSets {
+    main {
+        resources {
+            srcDirs 'resources'
+        }
+        java {
+            srcDirs 'src'
+        }
+    }
+    test {
+        java {
+            srcDirs 'test'
+        }
+    }
+
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "net.serenity-bdd:serenity-junit:${serenityVersion}"
+    implementation "net.serenity-bdd:serenity-core:${serenityVersion}"
+    implementation 'org.seleniumhq.selenium:selenium-java:3.141.59'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.5'
+    implementation 'junit:junit:4.13.2'
+    implementation 'org.apache.logging.log4j:log4j-core:2.17.1'
+}
+
+test {
+    def forks=System.getProperty("forks")
+    if (forks != null){
+        maxParallelForks=forks as int
+    }
+    testLogging.showStandardStreams = true
+    systemProperties System.getProperties()
+}
+
+gradle.startParameter.continueOnFailure = true
+
+test.finalizedBy(aggregate)
+
+clean.doFirst {
+    delete "${rootDir}/target"
+}

@@ -1,0 +1,8 @@
+{
+  "MyAppPage": {
+    "STAGING_DOMAIN": "http://demo.guru99.com",
+    "HomePage": "/",
+    "FlashPage": "/test/flash-testing.html",
+    "LoginPage": "/test/cookie/selenium_aut.php"
+  }
+}
