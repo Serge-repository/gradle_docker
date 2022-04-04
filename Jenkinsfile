@@ -13,17 +13,16 @@ pipeline {
                 bat "docker-compose up -d --scale chrome=2 --scale firefox=2"
             }
         }
-//         stage('Wait for grid to be ready') {
-//             steps {
-//                 //sh instead bat for MAC
-//                 bat '''TIMEOUT /T 5'''
-//             }
-//         }
         stage('Start tests') {
             steps {
 			     bat '''.\\\\gradlew clean test -Dtags="suite:sanity" -Dbrowser="chrome" -Denvironment="staging"'''
             }
         }
+//         stage('Start another tests on another env etc') {
+//                     steps {
+//         			     bat '''.\\\\gradlew test -Dtags="suite:docker" -Dbrowser="firefox" -Denvironment="staging"'''
+//                     }
+//                 }
     }
     post{
     		always{
