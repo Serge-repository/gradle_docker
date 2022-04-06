@@ -1,9 +1,11 @@
 pipeline {
 
     agent {
-        node("DOCKER1")
+    //add this tag for node in Jenkins
+        node("test-executor")
     }
 
+// build with parameters appear for jenkins pipeline instead of just build after first run
     parameters {
         string(name: 'branch', defaultValue: 'master', description: 'Branch to checkout')
         string(name: 'filter', defaultValue: 'tc:12345 or suite:smoke', description: 'Serenity filtering execution with tags')
@@ -28,7 +30,7 @@ pipeline {
 
     post {
         always {
-
+// publish html works only when HTMLPublisher plugin installed
             publishHTML (target: [
                 allowMissing         : true,
                 alwaysLinkToLastBuild: true,

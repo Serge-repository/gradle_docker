@@ -1,7 +1,8 @@
 pipeline {
 
     agent {
-        node("DOCKER1")
+    //add this tag for node in Jenkins
+        node("test-executor")
     }
 
     triggers { cron 'H 08 * * 1-5' } // run at 4 am Kyiv time
@@ -22,7 +23,7 @@ pipeline {
 
     post {
         always {
-
+// publish html works only when HTMLPublisher plugin installed
             publishHTML (target: [
                 allowMissing         : true,
                 alwaysLinkToLastBuild: true,

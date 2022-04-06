@@ -1,7 +1,11 @@
 // Jenkinsfile version to be used on Windows or MAC as a slave
 pipeline {
     // master executor should be set to 0 in Jenkins
-    agent any
+//     agent any
+agent {
+    //add this tag for node in Jenkins
+        node("test-executor")
+    }
 //     triggers {
 //             cron('H */8 * * *') //regular builds
 //             pollSCM('* * * * *') //polling for changes, here once a minute
