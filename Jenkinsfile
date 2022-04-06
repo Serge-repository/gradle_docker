@@ -26,7 +26,7 @@ pipeline {
     }
     post{
     	always{
-
+// publish html works only when HTMLPublisher plugin installed
     		publishHTML (target: [
                   allowMissing         : true,
                   alwaysLinkToLastBuild: true,
