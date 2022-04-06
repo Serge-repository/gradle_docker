@@ -17,9 +17,10 @@ agent {
                 bat "docker-compose up -d --scale chrome=2"
             }
         }
+        // forks must be equal to scale
         stage('Start tests') {
             steps {
-			     bat '''.\\\\gradlew clean test -Dtags="suite:sanity" -Dbrowser="chrome" -Denvironment="staging"'''
+			     bat '''.\\\\gradlew clean test -Dtags="suite:sanity" -Dforks=2 -Dbrowser="chrome" -Denvironment="staging"'''
             }
         }
 //         stage('Start another tests on another env etc') {
