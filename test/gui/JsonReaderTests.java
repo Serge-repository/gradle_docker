@@ -8,7 +8,7 @@ import org.junit.Test;
 public class JsonReaderTests extends TestLogger {
 
     @Test
-    @WithTag("suite:sanity")
+    @WithTag("suite:docker")
     public void readFromJson() {
         JsonReader jsonReader = new JsonReader();
         System.out.println(jsonReader.readFromJson());
