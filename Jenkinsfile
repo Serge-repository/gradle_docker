@@ -10,7 +10,7 @@ pipeline {
         stage('Start Grid') {
             steps {
                 //sh instead bat for MAC
-                bat "docker-compose up -d --scale chrome=2 --scale firefox=2"
+                bat "docker-compose up -d --scale chrome=2"
             }
         }
         stage('Start tests') {
@@ -19,15 +19,26 @@ pipeline {
             }
         }
 //         stage('Start another tests on another env etc') {
-//                     steps {
-//         			     bat '''.\\\\gradlew test -Dtags="suite:docker" -Dbrowser="firefox" -Denvironment="staging"'''
-//                     }
-//                 }
+//           steps {
+//         	     bat '''.\\\\gradlew test -Dtags="suite:docker" -Dbrowser="firefox" -Denvironment="staging"'''
+//           }
+//      }
     }
     post{
-    		always{
-    			archiveArtifacts artifacts: 'target/**'
-    			bat "docker-compose down"
+    	always{
+
+    		publishHTML (target: [
+                  allowMissing         : true,
+                  alwaysLinkToLastBuild: true,
+                  keepAll              : true,
+                  reportDir            : 'target/serenity/',
+                  reportFiles          : 'index.html',
+                  reportName           : "Serenity Test Report"
+            ])
+
+//     			archiveArtifacts artifacts: 'target/**'
+    			bat "docker-compose stop"
+    			bat "docker-compose rm --force"
     		}
     	}
 }
