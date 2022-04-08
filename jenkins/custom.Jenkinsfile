@@ -8,7 +8,15 @@ pipeline {
 // build with parameters appear for jenkins pipeline instead of just build after first run
     parameters {
         string(name: 'branch', defaultValue: 'master', description: 'Branch to checkout')
-        string(name: 'filter', defaultValue: 'tc:12345 or suite:smoke', description: 'Serenity filtering execution with tags')
+        string(name: 'FILTER', defaultValue: 'tc:12345 or suite:smoke',
+            description: '''Serenity filtering execution with tags. Examples:
+                            suite:smoke,
+                            suite:smoke or tc:12345.
+                            But the field can be empty.''')
+        string(name: 'test_class', defaultValue: 'gui.LoginPageTests',
+             description: '''Test class to be executed. Examples:
+                             gui.HomePageTests.
+                             But the field can be empty.''')
         choice(name: 'environment', choices: ['staging', 'dev', 'uat'], description: 'Tests run against environment')
         string(name: 'forks', defaultValue: '1', description: 'Number of parallel threads to run')
         choice(name: 'browser', choices: ['chrome', 'firefox'], description: 'Browser to run')
@@ -23,7 +31,12 @@ pipeline {
 
         stage('Execute tests'){
             steps {
-                sh "gradle clean test -Dtags=\"${params.filter}\" -Denvironment=${params.environment} -Dforks=${params.forks} -Dbrowser=${params.browser} aggregate"
+                script {
+                if(!FILTER.isEmpty()) {
+                    FILTER = '-Dtags=${FILTER}'
+                    }
+                }
+                sh "gradle clean test ${FILTER} -Denvironment=${params.environment} -Dforks=${params.forks} -Dbrowser=${params.browser} aggregate"
             }
         }
     }
