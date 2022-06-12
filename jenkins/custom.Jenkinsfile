@@ -13,7 +13,7 @@ pipeline {
                             suite:smoke,
                             suite:smoke or tc:12345.
                             But the field can be empty.''')
-        string(name: 'test_class', defaultValue: 'gui.LoginPageTests',
+        string(name: 'TEST_CLASS_FILTER', defaultValue: 'gui.LoginPageTests',
              description: '''Test class to be executed. Examples:
                              gui.HomePageTests.
                              But the field can be empty.''')
@@ -32,11 +32,14 @@ pipeline {
         stage('Execute tests'){
             steps {
                 script {
-                if(!FILTER.isEmpty()) {
-                    FILTER = '-Dtags=${FILTER}'
+                    if(!FILTER.isEmpty()) {
+                        FILTER = '-Dtags=${FILTER}'
                     }
+                    if (!TEST_CLASS_FILTER.isEmpty()) {
+                        TEST_CLASS_FILTER = '--tests ${TEST_CLASS_FILTER}'
+                    }
+                    sh "gradle clean test ${FILTER} ${TEST_CLASS_FILTER} -Denvironment=${params.environment} -Dforks=${params.forks} -Dbrowser=${params.browser} aggregate"
                 }
-                sh "gradle clean test ${FILTER} -Denvironment=${params.environment} -Dforks=${params.forks} -Dbrowser=${params.browser} aggregate"
             }
         }
     }
